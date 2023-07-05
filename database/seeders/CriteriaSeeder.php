@@ -13,6 +13,16 @@ class CriteriaSeeder extends Seeder
      */
     public function run(): void
     {
-        Criteria::factory(3)->create();
+        Criteria::factory(3)->create([
+            'project_id' => 1,
+        ]);
+
+        Criteria::factory(3)->create([
+            'project_id' => 2,
+        ]);
+
+        Criteria::factory(3)->create([
+            'project_id' => 3,
+        ]);
     }
 }

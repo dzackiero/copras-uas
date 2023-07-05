@@ -14,9 +14,30 @@ class AlternativeValueSeeder extends Seeder
      */
     public function run(): void
     {
-        AlternativeValue::factory(20)->create([
-            'criteria_id' => rand(1,3),
-            'alternative_id' => rand(1,10)
-        ]);
+
+        for ($i = 1; $i <= 3; $i++) {
+            for ($j=1; $j <= 3; $j++) {
+                AlternativeValue::factory()->create([
+                    'criteria_id' => $j,
+                    'alternative_id' => $i,
+                ]);
+            }
+        }
+        for ($i = 4; $i <= 6; $i++) {
+            for ($j=4; $j <= 6; $j++) {
+                AlternativeValue::factory()->create([
+                    'criteria_id' => $j,
+                    'alternative_id' => $i,
+                ]);
+            }
+        }
+        for ($i = 7; $i <= 9; $i++) {
+            for ($j=7; $j <= 9; $j++) {
+                AlternativeValue::factory()->create([
+                    'criteria_id' => $j,
+                    'alternative_id' => $i,
+                ]);
+            }
+        }
     }
 }

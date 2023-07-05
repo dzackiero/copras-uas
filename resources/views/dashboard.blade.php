@@ -9,7 +9,17 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+                    <h3 class="font-semibold text-xl mb-3">Your Projects:</h3>
+                    <ol>
+                        @foreach ($projects as $i => $project)
+                            <li>
+                                <p>{{ $i + 1 . '. ' }}
+                                    <a class="hover:underline hover:text-blue-700"
+                                        href="{{ route('project-detail', $project->id) }}">{{ $project->name }}</a>
+                                </p>
+                            </li>
+                        @endforeach
+                    </ol>
                 </div>
             </div>
         </div>

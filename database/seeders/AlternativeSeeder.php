@@ -13,6 +13,14 @@ class AlternativeSeeder extends Seeder
      */
     public function run(): void
     {
-        Alternative::factory(10)->create();
+        Alternative::factory(3)->create([
+            'project_id' => 1
+        ]);
+        Alternative::factory(3)->create([
+            'project_id' => 2
+        ]);
+        Alternative::factory(3)->create([
+            'project_id' => 3
+        ]);
     }
 }
