@@ -16,7 +16,7 @@ class Criteria extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'isBenefit', 'Weight'];
+    protected $fillable = ['project_id','name', 'isBenefit', 'weight'];
 
     public function alternative_values() : HasMany {
         return $this->hasMany(AlternativeValue::class);

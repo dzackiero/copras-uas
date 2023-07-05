@@ -16,7 +16,7 @@ class Alternative extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['project_id','name'];
 
     public function alternative_values() : HasMany {
         return $this->hasMany(AlternativeValue::class);
