@@ -10,7 +10,7 @@ class AlternativeValue extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['value'];
+    protected $fillable = ['criteria_id', 'alternative_id' ,'value'];
 
     public function criteria() : BelongsTo {
         return $this->belongsTo(Criteria::class);
