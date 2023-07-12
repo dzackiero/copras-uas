@@ -9,17 +9,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h3 class="font-semibold text-xl mb-3">Your Projects:</h3>
-                    <ol>
-                        @foreach ($projects as $i => $project)
-                            <li>
-                                <a class="hover:underline hover:text-blue-700"
-                                    href="{{ route('project-detail', $project->id) }}">{{ $project->name }}</a>
-                            </li>
-                        @endforeach
-                    </ol>
+                    <h3 class="font-semibold text-4xl mb-8 underline">Public Projects</h3>
+                    <livewire:projects-list searchable />
                 </div>
             </div>
         </div>
     </div>
+    </div>
+
 </x-app-layout>
