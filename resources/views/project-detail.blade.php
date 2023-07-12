@@ -17,7 +17,7 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 text-gray-900">
-                    COPRAS
+                    <livewire:copras-detail :project="$project" />
                 </div>
             </div>
         </div>

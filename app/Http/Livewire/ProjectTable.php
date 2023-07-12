@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
+
 class ProjectTable extends Component
 {
 
@@ -20,13 +21,19 @@ class ProjectTable extends Component
     public Collection $alternatives;
     public Collection $alternativeValues;
 
+    protected $listeners = ['validationError'];
+
     // Criteria
     public bool $editCriteriaModal = false;
-    public array $editedCriteria;
+    public bool $addCriteriaModal = false;
+    public array $addedCriteria = ['isBenefit' => false];
+    public array $editedCriteria = [];
 
     // Alternative
+    public bool $addAlternativeModal = false;
     public bool $editAlternativeModal = false;
-    public array $editedAlternative;
+    public array $addedAlternative = [];
+    public array $editedAlternative = [];
 
     public array $value = [];
 
@@ -56,13 +63,49 @@ class ProjectTable extends Component
         return view('livewire.project-table');
     }
 
+    protected function validating(string $type) : void {
+        if($type == 'table'){
+            $this->validate(
+                [
+                    'value.*' => 'required|min:0|numeric',
+                ],
+                [
+                    'value.*.required' => 'Cell value(s) cannot be empty',
+                    'value.*.min' => 'value(s) minimum is 0',
+                    'value.*.numeric' => 'Cell value(s) has to be number',
+                ]
+            );
+        }
+
+        if($type == 'addedCriteria' || $type == 'editedCriteria'){
+            $this->validate(
+                [
+                    "$type.name" => 'required',
+                    "$type.isBenefit" => 'required',
+                    "$type.weight" => 'required|integer|min:0|max:10',
+                ],
+                [
+                    "$type.name.required" => 'Criteria NAME cannot be empty',
+                    "$type.weight.required" => 'Criteria WEIGHT be empty',
+                    "$type.weight.numeric" => 'weight has to be a number',
+                    "$type.weight.*" => 'Weight is not in acceptable range (1-10)',
+                ]
+            );
+        }
+    }
+
     public function addCriteria() : void {
+        $this->validating('addedCriteria');
+
         Criteria::create([
             'project_id' => $this->project->id,
-            'name' => 'New Criteria',
-            'isBenefit' => 0,
-            'weight' => 1,
+            'name' => $this->addedCriteria['name'],
+            'isBenefit' => $this->addedCriteria['isBenefit'],
+            'weight' => $this->addedCriteria['weight'],
         ]);
+
+        $this->addedCriteria = ['isBenefit' => false];
+        $this->addCriteriaModal = false;
     }
 
     public function editCriteria($id) : void {
@@ -71,6 +114,8 @@ class ProjectTable extends Component
     }
 
     public function updateCriteria() : void {
+        $this->validating('editedCriteria');
+
         Criteria::find($this->editedCriteria['id'])->update($this->editedCriteria);
         $this->editCriteriaModal = false;
     }
@@ -78,8 +123,6 @@ class ProjectTable extends Component
     public function deleteCriteria($id) : void {
         AlternativeValue::where('criteria_id', $id)->delete();
         Criteria::destroy($id);
-
-        $this->editCriteriaModal = false;
 
         $this->notification([
             'icon' => 'success',
@@ -91,8 +134,10 @@ class ProjectTable extends Component
     public function addAlternative() : void{
         Alternative::create([
             'project_id' => $this->project->id,
-            'name' => 'New Alternative',
+            'name' => $this->addedAlternative['name'],
         ]);
+        $this->addedAlternative = [];
+        $this->addAlternativeModal = false;
     }
 
     public function editAlternative($id) : void {
@@ -106,11 +151,15 @@ class ProjectTable extends Component
     }
 
     public function deleteAlternative($id) : void {
-        $alt = AlternativeValue::where('alternative_id', $id)->delete();
+        AlternativeValue::where('alternative_id', $id)->delete();
         Alternative::destroy($id);
+
+        $this->editAlternativeModal = false;
     }
 
     public function save() : void {
+
+        $this->validating('table');
         foreach ($this->criterias as $criteria) {
             foreach ($this->alternatives as $alternative) {
                 $alternativeValue =  AlternativeValue::firstOrNew([
@@ -125,9 +174,11 @@ class ProjectTable extends Component
 
         $this->notification([
             'icon' => 'success',
-            'title' => 'Data has been Saved Successfully!',
+            'title' => 'Data has been saved successfully!',
             'timeout' => 4000,
         ]);
+
+        $this->emit('saved');
     }
 
 }
