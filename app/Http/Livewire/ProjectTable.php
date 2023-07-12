@@ -129,6 +129,8 @@ class ProjectTable extends Component
             'title' => 'Criteria has been!',
             'timeout' => 4000,
         ]);
+
+        $this->editCriteriaModal = false;
     }
 
     public function addAlternative() : void{

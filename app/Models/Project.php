@@ -16,7 +16,7 @@ class Project extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'isPrivate'];
+    protected $fillable = ['user_id','name', 'isPrivate'];
 
     public function criterias() : HasMany {
         return $this->hasMany(Criteria::class);

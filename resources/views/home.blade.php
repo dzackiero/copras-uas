@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Home') }}
+            Home
         </h2>
     </x-slot>
 
@@ -9,7 +9,14 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h3 class="font-semibold text-4xl mb-8 underline">Public Projects</h3>
+                    {{-- <div class="flex justify-between">
+                        <h3 class="font-semibold text-4xl mb-8 underline">Public Projects</h3>
+                        <div>
+                            <x-button md icon="plus" primary label="Add Project" />
+                        </div>
+                    </div> --}}
+                    <livewire:new-project title="Public Project" />
+
                     <livewire:projects-list searchable />
                 </div>
             </div>
