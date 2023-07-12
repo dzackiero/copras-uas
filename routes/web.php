@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'show'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/project/{id}', [DashboardController::class, 'project'])->middleware(['auth', 'verified'])->name('project-detail');
+Route::get('/home', [NavigationController::class, 'show'])->middleware(['auth', 'verified'])->name('home');
+Route::get('/{user}/projects', [NavigationController::class, 'userProjects'])->middleware(['auth', 'verified'])->name('user-projects');
+Route::get('/project/{id}', [NavigationController::class, 'project'])->middleware(['auth', 'verified'])->name('project-detail');
 
 
 Route::middleware('auth')->group(function () {

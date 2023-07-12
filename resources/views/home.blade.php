@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Home') }}
         </h2>
     </x-slot>
 
@@ -13,10 +13,8 @@
                     <ol>
                         @foreach ($projects as $i => $project)
                             <li>
-                                <p>{{ $i + 1 . '. ' }}
-                                    <a class="hover:underline hover:text-blue-700"
-                                        href="{{ route('project-detail', $project->id) }}">{{ $project->name }}</a>
-                                </p>
+                                <a class="hover:underline hover:text-blue-700"
+                                    href="{{ route('project-detail', $project->id) }}">{{ $project->name }}</a>
                             </li>
                         @endforeach
                     </ol>
