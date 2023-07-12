@@ -17,7 +17,8 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            "user_id" => 1,
+            "user_id" => rand(1,10),
+            "isPrivate" => false,
             "name" => fake()->company()
         ];
     }

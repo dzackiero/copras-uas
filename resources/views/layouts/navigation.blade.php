@@ -17,7 +17,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('user-projects', Auth::user())" :active="request()->routeIs('user-projects')">
+                    <x-nav-link :href="route('user-projects', Auth::user()->username)" :active="request()->routeIs('user-projects')">
                         {{ __('My Projects') }}
                     </x-nav-link>
                 </div>
@@ -25,7 +25,7 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <x-dropdown align="right" width="48">
+                <x-profile-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -58,7 +58,7 @@
                             </x-dropdown-link>
                         </form>
                     </x-slot>
-                </x-dropdown>
+                    </x-dropdown>
             </div>
 
             <!-- Hamburger -->

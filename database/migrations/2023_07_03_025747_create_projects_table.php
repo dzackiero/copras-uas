@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class, 'user_id')->constrained();
             $table->string("name");
+            $table->boolean("isPrivate");
             $table->timestamps();
         });
     }

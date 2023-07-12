@@ -14,6 +14,13 @@ class ProjectSeeder extends Seeder
     public function run(): void
     {
 
-        Project::factory(3)->create();
+        Project::factory(3)->create([
+                "user_id" => 1,
+                "isPrivate" => false,
+                "name" => fake()->company()
+            ]
+        );
+
+        Project::factory(10)->create();
     }
 }
