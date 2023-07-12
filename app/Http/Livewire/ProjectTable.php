@@ -181,6 +181,7 @@ class ProjectTable extends Component
         ]);
 
         $this->emit('saved');
+        $this->project->touch();
     }
 
 }
