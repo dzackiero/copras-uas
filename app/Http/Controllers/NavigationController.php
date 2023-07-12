@@ -23,8 +23,9 @@ class NavigationController extends Controller
         $user = User::where('username', $user)->first();
         $projects = $user->projects;
 
-        return view('home', [
+        return view('user-project', [
             'projects' =>  $projects,
+            'user' => $user,
         ]);
     }
 
