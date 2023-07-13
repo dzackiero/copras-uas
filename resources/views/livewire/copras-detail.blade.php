@@ -3,92 +3,294 @@
         $criteriaTotals->where('total', 0)->isEmpty() &&
         $criterias->isNotEmpty() &&
         $alternatives->isNotEmpty())
-    <h3 class="font-semibold text-xl">Bobot Criteria</h3>
+    <div>
+        {{-- Criteria --}}
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 text-gray-900">
+                <h3 class="font-semibold text-3xl mb-4">Bobot Criteria</h3>
+                <table class="text-center">
+                    <tr>
+                        <th class="border px-2 py-4">Criteria</th>
+                        <th class="border px-2 py-4">Weight</th>
+                    </tr>
+                    @foreach ($criterias as $criteria)
+                        <tr>
+                            <td class="border px-2 py-4">{{ $criteria->name }}</td>
+                            <td class="border px-2 py-4">{{ round($criteria->weight / $criterias->sum('weight'), 3) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
 
-    {{-- Criteria --}}
-    <table class="text-center">
-        <tr>
-            <th class="border px-2 py-4">Criteria</th>
-            <th class="border px-2 py-4">Weight</th>
-        </tr>
+        {{-- Matriks Ternormalisasi --}}
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 text-gray-900">
+                <h3 class="font-semibold text-3xl mb-4">Matrix Ternormalisasi</h3>
+                <table class="text-center">
+                    <tr>
+                        <th class="border px-2 py-4">Alternative</th>
+                        @foreach ($criterias as $criteria)
+                            <th class="border px-2 py-4">{{ $criteria->name }}</th>
+                        @endforeach
+                    </tr>
+                    @foreach ($alternatives as $alternative)
+                        <tr>
+                            <td class="border px-2 py-4">{{ $alternative->name }}</td>
+                            @foreach ($criterias as $criteria)
+                                @php
+                                    $xij_cell = $criteria->alternative_values->where('alternative_id', $alternative->id)->first()->value;
+                                    $xij_sum = $criteria->alternative_values->sum('value');
+                                @endphp
+                                <td class="border px-2 py-4">
+                                    {{-- Xij / ΣXij --}}
+                                    {{ round($xij_cell / $xij_sum, 5) }}
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
 
-        @foreach ($criterias as $criteria)
-            <tr>
-                <td class="border px-2 py-4">{{ $criteria->name }}</td>
-                <td class="border px-2 py-4">{{ round($criteria->weight / $criteriaSum, 2) }}</td>
-            </tr>
-        @endforeach
+        {{-- Matriks Terbobot --}}
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 text-gray-900">
+                <h3 class="font-semibold text-3xl mb-4">Matrix Terbobot</h3>
+                <table class="text-center">
+                    <tr>
+                        <th class="border px-2 py-4">Alternative</th>
+                        @foreach ($criterias as $criteria)
+                            <th class="border px-2 py-4">{{ $criteria->name }}</th>
+                        @endforeach
+                    </tr>
+                    @foreach ($alternatives as $alternative)
+                        <tr>
+                            <td class="border px-2 py-4">{{ $alternative->name }}</td>
+                            @foreach ($criterias as $criteria)
+                                @php
+                                    $xij_cell = $criteria->alternative_values->where('alternative_id', $alternative->id)->first()->value;
+                                    $xij_sum = $criteria->alternative_values->sum('value');
+                                    $wij = $criteria->weight / $criterias->sum('weight');
+                                @endphp
+                                <td class="border px-2 py-4">
+                                    {{-- (Xij / ΣXij) * Wj --}}
+                                    {{ round(($xij_cell / $xij_sum) * $wij, 8) }}
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
 
-    </table>
+        {{-- Nilai Benefit & Cost --}}
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 text-gray-900">
+                <h3 class="font-semibold text-3xl mb-4">Nilai Benefit & Cost</h3>
+                <table class="text-center">
+                    <tr>
+                        <th class="border px-2 py-4">Alternative</th>
+                        <th class="border px-2 py-4">Benefit</th>
+                        <th class="border px-2 py-4">Cost</th>
+                    </tr>
+                    @foreach ($alternatives as $alternative)
+                        <tr>
+                            @php
+                                $benefit_sum = 0;
+                                $cost_sum = 0;
+                            @endphp
+                            <td class="border px-2 py-4">{{ $alternative->name }}</td>
+                            @foreach ($criterias as $criteria)
+                                @php
+                                    $xij_cell = $criteria->alternative_values->where('alternative_id', $alternative->id)->first()->value;
+                                    $xij_sum = $criteria->alternative_values->sum('value');
+                                    $wij = $criteria->weight / $criterias->sum('weight');
+                                    
+                                    if ($criteria->isBenefit) {
+                                        $benefit_sum += ($xij_cell / $xij_sum) * $wij;
+                                    } else {
+                                        $cost_sum += ($xij_cell / $xij_sum) * $wij;
+                                    }
+                                    
+                                @endphp
+                            @endforeach
+                            <td class="border px-2 py-4">
+                                {{ round($benefit_sum, 8) }}
+                            </td>
+                            <td class="border px-2 py-4">
+                                {{ round($cost_sum, 8) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
 
-    {{-- Matriks Ternormalisasi --}}
-    <h3 class="mt-4 font-semibold text-xl">Matrix Ternormalisasi</h3>
-    <table class="text-center">
-        @foreach ($alternatives as $alternative)
-            <tr>
-                <td class="border px-2 py-4">{{ $alternative->name }}</td>
-                @foreach ($criterias as $criteria)
+        {{-- S-1 --}}
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 text-gray-900">
+                <h3 class="font-semibold text-3xl mb-4">S - 1</h3>
+                <table class="text-center">
+                    <tr>
+                        <th class="border px-2 py-4">Alternative</th>
+                        <th class="border px-2 py-4">1/S-i</th>
+                    </tr>
                     @php
-                        $xij_cell = $alternativeValues
-                            ->where('criteria_id', $criteria->id)
-                            ->where('alternative_id', $alternative->id)
-                            ->first()->value;
-                        $xij_sum = $criteria->alternative_values->sum('value');
+                        $si_sum = 0;
+                        $result = collect();
                     @endphp
-                    <td class="border px-2 py-4">
-                        {{-- Xij / ΣXij --}}
-                        {{ round($xij_cell / ($xij_sum != 0 ? $xij_sum : 1), 5) }}
-                    </td>
-                @endforeach
-            </tr>
-        @endforeach
-    </table>
+                    @foreach ($alternatives as $alternative)
+                        <tr>
+                            @php
+                                $benefit_sum = 0;
+                                $cost_sum = 0;
+                            @endphp
+                            <td class="border px-2 py-4">{{ $alternative->name }}</td>
+                            @foreach ($criterias as $criteria)
+                                @php
+                                    $xij_cell = $criteria->alternative_values->where('alternative_id', $alternative->id)->first()->value;
+                                    $xij_sum = $criteria->alternative_values->sum('value');
+                                    $wij = $criteria->weight / $criterias->sum('weight');
+                                    
+                                    if ($criteria->isBenefit) {
+                                        $benefit_sum += ($xij_cell / $xij_sum) * $wij;
+                                    } else {
+                                        $cost_sum += ($xij_cell / $xij_sum) * $wij;
+                                    }
+                                @endphp
+                            @endforeach
+                            <td class="border px-2 py-4">
+                                {{ round(1 / $cost_sum, 8) }}
+                            </td>
+                        </tr>
+                        @php
+                            $si_sum += 1 / $cost_sum;
+                        @endphp
+                    @endforeach
+                    <tr class="font-semibold">
+                        <td class="border px-2 py-2">Total</td>
+                        <td class="border px-2 py-2">{{ $si_sum }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 
-    <h3 class="mt-4 font-semibold text-xl">Matrix Terbobot</h3>
-    <table class="text-center">
-        @foreach ($alternatives as $alternative)
-            <tr>
-                <td class="border px-2 py-4">{{ $alternative->name }}</td>
-                @foreach ($criterias as $criteria)
-                    @php
-                        $xij_cell = $alternativeValues
-                            ->where('criteria_id', $criteria->id)
-                            ->where('alternative_id', $alternative->id)
-                            ->first()->value;
-                        $xij_sum = $criteria->alternative_values->sum('value');
-                        $wij = $criteria->weight / $criteriaSum;
-                    @endphp
-                    <td class="border px-2 py-4">
-                        {{-- (Xij / ΣXij) * Wj --}}
-                        {{ round(($xij_cell / $xij_sum) * $wij, 5) }}
-                    </td>
-                @endforeach
-            </tr>
-        @endforeach
-    </table>
+        {{-- S-i*(sum=1/s-i) --}}
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 text-gray-900">
+                <h3 class="font-semibold text-3xl mb-4">S-i*(sum=1/s-i)</h3>
+                <table class="text-center">
+                    <tr>
+                        <th class="border px-2 py-4">Alternative</th>
+                        <th class="border px-2 py-4">S-i*(sum=1/s-i)</th>
+                    </tr>
+                    @foreach ($alternatives as $alternative)
+                        <tr>
+                            @php
+                                $benefit_sum = 0;
+                                $cost_sum = 0;
+                            @endphp
+                            <td class="border px-2 py-4">{{ $alternative->name }}</td>
+                            @foreach ($criterias as $criteria)
+                                @php
+                                    $xij_cell = $criteria->alternative_values->where('alternative_id', $alternative->id)->first()->value;
+                                    $xij_sum = $criteria->alternative_values->sum('value');
+                                    $wij = $criteria->weight / $criterias->sum('weight');
+                                    
+                                    if ($criteria->isBenefit) {
+                                        $benefit_sum += ($xij_cell / $xij_sum) * $wij;
+                                    } else {
+                                        $cost_sum += ($xij_cell / $xij_sum) * $wij;
+                                    }
+                                @endphp
+                            @endforeach
+                            <td class="border px-2 py-4">
+                                {{ round($cost_sum * $si_sum, 8) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
 
-    <h3 class="mt-4 font-semibold text-xl">Nilai Index Benefit & Cost</h3>
-    <table class="text-center">
-        @foreach ($alternatives as $alternative)
-            <tr>
-                <td class="border px-2 py-4">{{ $alternative->name }}</td>
-                @foreach ($criterias as $criteria)
+        {{-- Result --}}
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 text-gray-900">
+                <h3 class="font-semibold text-3xl mb-4">Result</h3>
+                <table class="text-center">
+                    <tr>
+                        <th class="border px-2 py-4">Alternative</th>
+                        <th class="border px-2 py-4">S-i*(sum=1/s-i)</th>
+                    </tr>
+                    @foreach ($alternatives as $alternative)
+                        <tr>
+                            @php
+                                $benefit_sum = 0;
+                                $cost_sum = 0;
+                                
+                            @endphp
+                            <td class="border px-2 py-4">{{ $alternative->name }}</td>
+                            @foreach ($criterias as $criteria)
+                                @php
+                                    $xij_cell = $criteria->alternative_values->where('alternative_id', $alternative->id)->first()->value;
+                                    $xij_sum = $criteria->alternative_values->sum('value');
+                                    $wij = $criteria->weight / $criterias->sum('weight');
+                                    
+                                    if ($criteria->isBenefit) {
+                                        $benefit_sum += ($xij_cell / $xij_sum) * $wij;
+                                    } else {
+                                        $cost_sum += ($xij_cell / $xij_sum) * $wij;
+                                    }
+                                @endphp
+                            @endforeach
+                            <td class="border px-2 py-4">
+                                @php
+                                    $res = [
+                                        'alternative' => $alternative,
+                                        'result' => $benefit_sum + $criterias->where('isBenefit', false)->sum('weight') / $criterias->sum('weight') / ($cost_sum * $si_sum),
+                                    ];
+                                    $result->push($res);
+                                @endphp
+                                {{ round(
+                                    $benefit_sum +
+                                        $criterias->where('isBenefit', false)->sum('weight') / $criterias->sum('weight') / ($cost_sum * $si_sum),
+                                    8,
+                                ) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
+
+        {{-- Ranking --}}
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 text-gray-900">
+                <h3 class="font-semibold text-3xl mb-4">Ranking</h3>
+                <table class="text-center">
+                    <tr>
+                        <th class="border px-2 py-4">Alternative</th>
+                        <th class="border px-2 py-4">Value</th>
+                        <th class="border px-2 py-4">Ranking</th>
+                    </tr>
                     @php
-                        $xij_cell = $alternativeValues
-                            ->where('criteria_id', $criteria->id)
-                            ->where('alternative_id', $alternative->id)
-                            ->first()->value;
-                        $xij_sum = $criteria->alternative_values->sum('value');
-                        $wij = $criteria->weight / $criteriaSum;
+                        $i = 1;
                     @endphp
-                    <td class="border px-2 py-4">
-                        {{-- (Xij / ΣXij) * Wj --}}
-                        {{ round(($xij_cell / $xij_sum) * $wij, 5) }}
-                    </td>
-                @endforeach
-            </tr>
-        @endforeach
-    </table>
+                    @foreach ($result->sortBy('result') as $res)
+                        <tr>
+                            <td class="border px-2 py-4">{{ $res['alternative']->name }}</td>
+                            <td class="border px-2 py-4">{{ $res['result'] }}</td>
+                            <td class="border px-2 py-4">{{ $i }}</td>
+                        </tr>
+                        @php
+                            $i++;
+                        @endphp
+                    @endforeach
+                </table>
+            </div>
+        </div>
     </div>
 @else
     <div>

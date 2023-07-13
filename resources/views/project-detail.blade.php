@@ -12,12 +12,7 @@
                     <livewire:project-table :project="$project" />
                 </div>
             </div>
-
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                <div class="p-6 text-gray-900">
-                    <livewire:copras-detail :project="$project" />
-                </div>
-            </div>
+            <livewire:copras-detail :project="$project" />
         </div>
     </div>
 </x-app-layout>
