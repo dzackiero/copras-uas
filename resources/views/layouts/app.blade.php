@@ -9,6 +9,7 @@
     <title>COPRAS Web Application</title>
 
     <!-- Fonts -->
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
