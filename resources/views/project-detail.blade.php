@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Project : {{ $project->name }}
-        </h2>
+        <livewire:edit-project :project="$project" />
     </x-slot>
 
     <x-notifications />

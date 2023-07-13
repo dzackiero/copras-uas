@@ -29,10 +29,10 @@
                         @foreach ($alternatives as $alternative)
                             <tr>
                                 <td class="border">
-                                    <p>
-                                        {{ $alternative->name }}
+                                    <div class="flex items-center gap-3 w-full">
                                         <x-button wire:click="editAlternative({{ $alternative->id }})" icon="pencil" />
-                                    </p>
+                                        <p>{{ $alternative->name }}</p>
+                                    </div>
                                 </td>
                                 @foreach ($criterias as $criteria)
                                     <td class="border">

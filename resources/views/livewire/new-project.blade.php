@@ -7,7 +7,7 @@
     <x-modal.card title="New Project" blur wire:model.defer="newProjectModal">
         <x-errors />
         <div class="grid grid-cols-1 gap-4">
-            <x-input label="Name" name="name" wire:model="newProject.name" placeholder="Criteria Name" />
+            <x-input label="Name" name="name" wire:model="newProject.name" placeholder="Project Name" />
 
             <x-toggle lg wire:model.defer="newProject.isPrivate" label='Private' />
         </div>
