@@ -18,7 +18,7 @@ class NewProject extends Component
     }
 
     public function addProject() {
-        Project::create([
+        $project = Project::create([
             'user_id' => Auth::user()->id,
             'name' => $this->newProject['name'],
             'isPrivate' => $this->newProject['isPrivate'],
@@ -27,5 +27,7 @@ class NewProject extends Component
         $this->newProject = ['isPrivate' => false];
         $this->newProjectModal = false;
         $this->emit('new-project');
+
+        return redirect()->route('project-detail', $project->id);
     }
 }
