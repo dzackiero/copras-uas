@@ -279,7 +279,7 @@
                     @php
                         $i = 1;
                     @endphp
-                    @foreach ($result->sortBy('result') as $res)
+                    @foreach ($result->sortByDesc('result') as $res)
                         <tr>
                             <td class="border px-2 py-4">{{ $res['alternative']->name }}</td>
                             <td class="border px-2 py-4">{{ $res['result'] }}</td>
