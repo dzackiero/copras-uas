@@ -88,6 +88,28 @@
                 name="weight" placeholder="5" />
 
             <x-toggle lg wire:model.defer="editedCriteria.isBenefit" left-label='Cost' label='Benefit' />
+            <x-toggle lg wire:model="addedCriteria.isFuzzy" label='Fuzzy' />
+            @if ($addedCriteria['isFuzzy'])
+                <div class="flex flex-col gap-3">
+                    <h1 class="text-lg font-semibold">Fuzzy</h1>
+                    @foreach ($fuzzies as $key => $fuzzy)
+                        <div class="grid grid-cols-3 gap-2 sm:mr-12">
+                            <div class="col-span-2">
+                                <x-input name="name" wire:model="fuzzies.{{ $key }}.display"
+                                    placeholder="Displayed Option" />
+                            </div>
+                            <div class="flex-none">
+                                <x-inputs.number min="0" max="10"
+                                    wire:model='fuzzies.{{ $key }}.value' name="weight"
+                                    placeholder="Value" />
+                            </div>
+                        </div>
+                    @endforeach
+                    <div>
+                        <x-button wire:click="addFuzzy" label='Add Fuzzy' icon="plus" color="primary" />
+                    </div>
+                </div>
+            @endif
         </div>
 
         <x-slot name="footer">
@@ -111,6 +133,28 @@
                 name="weight" placeholder="5" />
 
             <x-toggle lg wire:model.defer="addedCriteria.isBenefit" left-label='Cost' label='Benefit' />
+            <x-toggle lg wire:model="addedCriteria.isFuzzy" label='Fuzzy' />
+            @if ($addedCriteria['isFuzzy'])
+                <div class="flex flex-col gap-3">
+                    <h1 class="text-lg font-semibold">Fuzzy</h1>
+                    @foreach ($fuzzies as $key => $fuzzy)
+                        <div class="grid grid-cols-3 gap-2 sm:mr-12">
+                            <div class="col-span-2">
+                                <x-input name="name" wire:model="fuzzies.{{ $key }}.display"
+                                    placeholder="Displayed Option" />
+                            </div>
+                            <div class="flex-none">
+                                <x-inputs.number min="0" max="10"
+                                    wire:model='fuzzies.{{ $key }}.value' name="weight"
+                                    placeholder="Value" />
+                            </div>
+                        </div>
+                    @endforeach
+                    <div>
+                        <x-button wire:click="addFuzzy" label='Add Fuzzy' icon="plus" color="primary" />
+                    </div>
+                </div>
+            @endif
         </div>
 
         <x-slot name="footer">
@@ -128,7 +172,8 @@
     {{-- Alternative --}}
     <x-modal.card title="Add Alternative" blur wire:model.defer="addAlternativeModal">
         <div class="grid grid-cols-1 gap-4">
-            <x-input label="Name" name="name" wire:model="addedAlternative.name" placeholder="Alternative Name" />
+            <x-input label="Name" name="name" wire:model="addedAlternative.name"
+                placeholder="Alternative Name" />
         </div>
 
         <x-slot name="footer">

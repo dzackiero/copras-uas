@@ -1,10 +1,10 @@
-@if (
-    $criteriaTotals->isNotEmpty() &&
-        $criteriaTotals->where('total', 0)->isEmpty() &&
-        $criterias->isNotEmpty() &&
-        $criterias->where('isBenefit', false)->isNotEmpty() &&
-        $alternatives->isNotEmpty())
-    <div>
+<div>
+    @if (
+        $criteriaTotals->isNotEmpty() &&
+            $criteriaTotals->where('total', 0)->isEmpty() &&
+            $criterias->isNotEmpty() &&
+            $criterias->where('isBenefit', false)->isNotEmpty() &&
+            $alternatives->isNotEmpty())
         {{-- Criteria --}}
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
             <div class="p-6 text-gray-900">
@@ -298,5 +298,5 @@
                 There is something wrong with the data. Please update this data.
             </div>
         </div>
-@endif
+    @endif
 </div>

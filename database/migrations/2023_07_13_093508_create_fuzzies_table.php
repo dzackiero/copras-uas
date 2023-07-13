@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('fuzzies', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Criteria::class, 'criteria_id');
+            $table->foreignIdFor(Criteria::class, 'criteria_id')->constrained();
             $table->string('display');
             $table->integer('value');
             $table->timestamps();

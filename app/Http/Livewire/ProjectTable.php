@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Alternative;
 use App\Models\AlternativeValue;
 use App\Models\Criteria;
+use App\Models\Fuzzy;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
@@ -26,8 +27,9 @@ class ProjectTable extends Component
     // Criteria
     public bool $editCriteriaModal = false;
     public bool $addCriteriaModal = false;
-    public array $addedCriteria = ['isBenefit' => false];
+    public array $addedCriteria = ['isBenefit' => false, 'isFuzzy' => false];
     public array $editedCriteria = [];
+    public array $fuzzies = [];
 
     // Alternative
     public bool $addAlternativeModal = false;
@@ -59,6 +61,13 @@ class ProjectTable extends Component
 
     public function render() {
         $this->loadDatas();
+
+        if($this->addedCriteria['isFuzzy'] || $this->addedCriteria['isFuzzy']){
+            if (empty($this->fuzzies)) {
+                $this->addFuzzy();
+            }
+        }
+
 
         return view('livewire.project-table');
     }
@@ -94,23 +103,40 @@ class ProjectTable extends Component
         }
     }
 
+    public function addFuzzy() : void {
+        $this->fuzzies[] = [
+            'display' => null,
+            'value' => null,
+        ];
+    }
+
     public function addCriteria() : void {
         $this->validating('addedCriteria');
 
-        Criteria::create([
+        $criteria = Criteria::create([
             'project_id' => $this->project->id,
             'name' => $this->addedCriteria['name'],
             'isBenefit' => $this->addedCriteria['isBenefit'],
             'weight' => $this->addedCriteria['weight'],
         ]);
 
-        $this->addedCriteria = ['isBenefit' => false];
+        foreach ($this->fuzzies as $fuzzy) {
+            Fuzzy::create([
+                'criteria_id' => $criteria->id,
+                'display' => $fuzzy['display'],
+                'value' => $fuzzy['value'],
+            ]);
+        }
+
+        $this->addedCriteria = ['isBenefit' => false, 'isFuzzy' => false];
         $this->addCriteriaModal = false;
     }
 
     public function editCriteria($id) : void {
         $this->editCriteriaModal = true;
-        $this->editedCriteria = $this->criterias->firstWhere('id', $id)->toArray();
+        $this->editedCriteria = Criteria::find($id)->toArray();
+        $this->fuzzies = Fuzzy::where('criteria_id', $id)->get()->toArray();
+        $this->editedCriteria['isFuzzy'] =  Fuzzy::where('criteria_id', $id)->get()->isNotEmpty();
     }
 
     public function updateCriteria() : void {
