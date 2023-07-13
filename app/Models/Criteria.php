@@ -21,6 +21,9 @@ class Criteria extends Model
     public function alternative_values() : HasMany {
         return $this->hasMany(AlternativeValue::class);
     }
+    public function Fuzzies() : HasMany {
+        return $this->hasMany(Fuzzy::class);
+    }
 
     public function project() : BelongsTo {
         return $this->belongsTo(Project::class);
