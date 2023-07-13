@@ -17,7 +17,9 @@
                                 <div class="">{{ $criteria->name }}
                                     {{ $criteria->isBenefit ? '(Benefit)' : '(Cost)' }}
                                 </div>
-                                <x-button wire:click="editCriteria({{ $criteria->id }})" icon="pencil" />
+                                @if (auth()->user() == $project->user)
+                                    <x-button wire:click="editCriteria({{ $criteria->id }})" icon="pencil" />
+                                @endif
                             </th>
                         @endforeach
                     </tr>
@@ -30,7 +32,10 @@
                             <tr>
                                 <td class="border">
                                     <div class="flex items-center gap-3 w-full">
-                                        <x-button wire:click="editAlternative({{ $alternative->id }})" icon="pencil" />
+                                        @if (auth()->user() == $project->user)
+                                            <x-button wire:click="editAlternative({{ $alternative->id }})"
+                                                icon="pencil" />
+                                        @endif
                                         <p>{{ $alternative->name }}</p>
                                     </div>
                                 </td>
