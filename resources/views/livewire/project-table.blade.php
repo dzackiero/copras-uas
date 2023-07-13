@@ -31,34 +31,35 @@
                         @foreach ($alternatives as $alternative)
                             <tr>
                                 <td class="border">
-                                    <div class="flex items-center gap-3 w-full">
+                                    <div class="flex items-center w-full">
                                         @if (auth()->user() == $project->user)
                                             <x-button wire:click="editAlternative({{ $alternative->id }})"
                                                 icon="pencil" />
                                         @endif
-                                        <p>{{ $alternative->name }}</p>
+                                        <p class="ml-2">{{ $alternative->name }}</p>
                                     </div>
                                 </td>
                                 @foreach ($criterias as $criteria)
                                     <td class="border">
-                                        <input type="number" required placeholder="0" min="0"
+                                        <input type="number" required @if (auth()->user()->id != $project->user->id) readonly @endif
+                                            placeholder="0" min="0"
                                             wire:key='{{ 'crit-' . $criteria->id . '-alt-' . $alternative->id }}'
                                             wire:model='value.{{ 'crit-' . $criteria->id . '-alt-' . $alternative->id }}'
                                             name="{{ 'crit-' . $criteria->id . '-alt-' . $alternative->id }}"
-                                            class="border-none text-center w-full @error('value.crit-' . $criteria->id . '-alt-' . $alternative->id) bg-red-100 @enderror
+                                            class="border-none h-full text-center w-full @error('value.crit-' . $criteria->id . '-alt-' . $alternative->id) bg-red-100 @enderror
                                         ">
                                     </td>
                                 @endforeach
                             </tr>
                         @endforeach
-                        {{-- <tr>
-                            <td class="border">Total</td>
+                        <tr class="border font-semibold">
+                            <td>Total</td>
                             @foreach ($criterias as $criteria)
                                 <td class="border"><input type="number" readonly class="border-none text-center w-full"
                                         value="{{ $alternativeValues->where('criteria_id', $criteria->id)->sum('value') }}">
                                 </td>
                             @endforeach
-                        </tr> --}}
+                        </tr>
                     </form>
                 </tbody>
             </table>
