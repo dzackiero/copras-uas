@@ -126,7 +126,7 @@ class ProjectTable extends Component
 
         $this->notification([
             'icon' => 'success',
-            'title' => 'Criteria has been!',
+            'title' => 'Criteria has been created!',
             'timeout' => 4000,
         ]);
 
