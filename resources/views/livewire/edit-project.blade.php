@@ -2,9 +2,13 @@
     <div class="flex w-full justify-between">
         <div class="flex gap-3 items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Project : {{ $project->name }}
+                <a class="hover:underline"
+                    href="{{ route('user-projects', $project->user->username) }}">{{ $project->user->username }}</a>
+                | {{ $project->name }}
             </h2>
-            <x-button icon="pencil" primary wire:click="editProject" />
+            @if (auth()->user()->id == $project->user->id)
+                <x-button icon="pencil" primary wire:click="editProject" />
+            @endif
         </div>
         <x-badge lg label="{{ $project->isPrivate ? 'Private' : 'Public' }}" />
     </div>

@@ -17,7 +17,7 @@
             @endisset
         </div>
     @endif
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         @foreach ($projects as $project)
             <a href="{{ route('project-detail', $project->id) }}">
                 <div
@@ -39,7 +39,7 @@
                 </div>
             </a>
         @endforeach
-        <div class="col-span-2">
+        <div class="col-span-1 md:col-span-2">
             {{ $projects->links() }}
         </div>
     </div>
