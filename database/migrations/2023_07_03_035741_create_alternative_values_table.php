@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Alternative::class,'alternative_id')->constrained();
             $table->unsignedInteger('value');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

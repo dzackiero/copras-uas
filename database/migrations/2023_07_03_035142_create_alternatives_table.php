@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignIdFor(Project::class, "project_id")->constrained();
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

@@ -31,6 +31,9 @@ class NavigationController extends Controller
 
     function project($id) : View {
         $project = Project::find($id);
+        if($project == null){
+            return redirect()->route('home');
+        }
 
         $criterias = $project->criterias;
         $alternatives = $project->alternatives;

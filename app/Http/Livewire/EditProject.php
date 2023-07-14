@@ -16,6 +16,12 @@ class EditProject extends Component
         $this->editProjectModal = true;
     }
 
+    public function deleteProject() {
+        $this->project->delete();
+
+        return redirect()->route('user-projects', auth()->user()->username);
+    }
+
     public function updateProject() : void {
         $this->editProjectModal = false;
         $this->project->name = $this->editedProject['name'];

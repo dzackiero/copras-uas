@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean("isBenefit");
             $table->unsignedInteger("weight");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

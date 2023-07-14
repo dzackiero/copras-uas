@@ -22,10 +22,11 @@
 
         <x-slot name="footer">
             <div class="flex justify-between gap-x-4">
-                <div></div>
+                <x-button flat negative label="Delete" wire:click="deleteProject" />
                 <div class="flex">
                     <x-button flat label="Cancel" x-on:click="close" />
                     <x-button primary label="Save" wire:click="updateProject" />
+
                 </div>
             </div>
         </x-slot>
