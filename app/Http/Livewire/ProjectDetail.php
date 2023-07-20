@@ -61,10 +61,10 @@ class ProjectDetail extends Component
             $this->validate(
                 [
                     "$type.name" => 'required|string',
-                    "$type.1" => 'required|integer',
-                    "$type.2" => 'required|integer',
-                    "$type.3" => 'required|integer',
-                    "$type.4" => 'required|integer',
+                    "$type.1" => 'required|integer|min:0',
+                    "$type.2" => 'required|integer|min:0',
+                    "$type.3" => 'required|integer|min:0',
+                    "$type.4" => 'required|integer|min:0',
                 ],
                 [
                     "$type.name.required" => 'Criteria NAME cannot be empty',
