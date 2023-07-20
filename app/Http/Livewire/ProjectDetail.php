@@ -67,15 +67,10 @@ class ProjectDetail extends Component
                     "$type.4" => 'required|integer|min:0',
                 ],
                 [
-                    "$type.name.required" => 'Criteria NAME cannot be empty',
-                    "$type.1.required" => 'durability cannot be empty',
-                    "$type.1.integer" => 'durability has to be a number',
-                    "$type.2.required" => 'Damage cannot be empty',
-                    "$type.2.integer" => 'Damage has to be a number',
-                    "$type.3.required" => 'Crowd Control cannot be empty',
-                    "$type.3.integer" => 'Crowd Control has to be a number',
-                    "$type.4.required" => 'Difficulty cannot be empty',
-                    "$type.4.integer" => 'Difficulty has to be a number',
+                    "$type.name.required" => 'alternative name cannot be empty',
+                    "$type.*.required" => 'this field cannot be empty',
+                    "$type.*.integer" => 'this field has to be a number',
+                    "$type.*.min" => 'this field must be at least 0',
                 ]
             );
         }

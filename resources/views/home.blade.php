@@ -12,7 +12,8 @@
                     <h1 class="text-xl">Discover your ultimate hero to conquer the battlegrounds with your ideal hero by
                         your side!
                     </h1>
-                    <x-button primary lg label="Get My Ideal Hero" class="mt-6 mb-3" />
+                    <x-button href="{{ route('user-project', Auth::user()->username) }}" primary lg
+                        label="Get My Ideal Hero" class="mt-6 mb-3" />
                 </div>
             </div>
         </div>
