@@ -13,15 +13,14 @@ use Illuminate\Support\Facades\Auth;
 class NavigationController extends Controller
 {
     function show() : View {
-        $projects = Project::all();
-        return view('home', [
-            'projects' =>  $projects,
-        ]);
+        return view('home');
     }
 
     function userProject($user) : View {
         $user = User::where('username', $user)->first();
-
+        $project = Project::firstOrCreate([
+            'user_id' => $user->id,
+        ]);
         return view('user-project', [
             'user' => $user
         ]);

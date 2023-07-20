@@ -15,8 +15,6 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class, 'user_id')->constrained();
-            $table->string("name");
-            $table->boolean("isPrivate");
             $table->timestamps();
             $table->softDeletes();
         });
