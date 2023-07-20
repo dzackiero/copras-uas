@@ -21,8 +21,7 @@ class NavigationController extends Controller
         $project = Project::firstOrCreate([
             'user_id' => $user->id,
         ]);
-
-        if(!$project->criterias){
+        if($project->criterias->isEmpty()){
             Criteria::create([
                 'project_id' => $project->id,
                 'name' => 'Durability',
