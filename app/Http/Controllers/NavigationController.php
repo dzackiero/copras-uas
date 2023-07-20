@@ -21,7 +21,7 @@ class NavigationController extends Controller
 
     function userProjects($user) : View {
         $user = User::where('username', $user)->first();
-        $projects = $user->projects;
+        $projects = auth()->user() == $user ? $user->projects : $user->projects->where('isPrivate', false);
 
         return view('user-project', [
             'projects' =>  $projects,
