@@ -41,7 +41,49 @@ class ProjectDetail extends Component
         return view('livewire.project-detail');
     }
 
+        protected function validating(string $type) : void {
+        if($type == 'modalCriteria'){
+            $this->validate(
+                [
+                    "$type.name" => 'required',
+                    "$type.weight" => 'required|integer|min:0|max:10',
+                ],
+                [
+                    "$type.name.required" => 'Criteria NAME cannot be empty',
+                    "$type.weight.required" => 'Criteria WEIGHT be empty',
+                    "$type.weight.numeric" => 'weight has to be a number',
+                    "$type.weight.*" => 'Weight is not in acceptable range (1-10)',
+                ]
+            );
+        }
+
+        if($type == 'modalAlternative'){
+            $this->validate(
+                [
+                    "$type.name" => 'required|string',
+                    "$type.1" => 'required|integer',
+                    "$type.2" => 'required|integer',
+                    "$type.3" => 'required|integer',
+                    "$type.4" => 'required|integer',
+                ],
+                [
+                    "$type.name.required" => 'Criteria NAME cannot be empty',
+                    "$type.1.required" => 'durability cannot be empty',
+                    "$type.1.integer" => 'durability has to be a number',
+                    "$type.2.required" => 'Damage cannot be empty',
+                    "$type.2.integer" => 'Damage has to be a number',
+                    "$type.3.required" => 'Crowd Control cannot be empty',
+                    "$type.3.integer" => 'Crowd Control has to be a number',
+                    "$type.4.required" => 'Difficulty cannot be empty',
+                    "$type.4.integer" => 'Difficulty has to be a number',
+                ]
+            );
+        }
+    }
+
     public function addAlternative() {
+        $this->validating("modalAlternative");
+
         $alt = Alternative::create([
             'project_id' => $this->project->id,
             'name' => $this->modalAlternative['name'],
@@ -60,9 +102,11 @@ class ProjectDetail extends Component
     }
 
     public function editAlternative($id) {
+
         $alternative = Alternative::find($id);
         $this->modalAlternative['id'] = $id;
         $this->modalAlternative['name'] = $alternative->name;
+
         foreach($this->criterias as $i => $criteria){
             $this->modalAlternative[$i+1] = $alternative->alternative_values->where('criteria_id', 1)->first()->value;
         }
@@ -71,6 +115,8 @@ class ProjectDetail extends Component
     }
 
     public function updateAlternative() {
+        $this->validating("modalAlternative");
+
         $alternative = Alternative::find($this->modalAlternative['id']);
         $alternative->name = $this->modalAlternative['name'];
         $alternative->save();
@@ -94,6 +140,7 @@ class ProjectDetail extends Component
     }
 
     public function editCriteria($id) {
+
         $criteria = Criteria::find($id);
         $this->modalCriteria['id'] = $id;
         $this->modalCriteria['name'] = $criteria->name;
@@ -103,6 +150,8 @@ class ProjectDetail extends Component
     }
 
     public function updateCriteria() {
+        $this->validating("modalCriteria");
+
         $criteria = Criteria::find($this->modalCriteria['id']);
         $criteria->weight = $this->modalCriteria['weight'];
         $criteria->save();

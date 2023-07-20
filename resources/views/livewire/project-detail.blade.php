@@ -56,6 +56,7 @@
 
                     <x-modal.card title="Add Alternative" blur wire:model.defer="addAlternativeModal">
                         <div class="grid grid-cols-1 gap-4">
+
                             <x-input wire:model="modalAlternative.name" label="Alternative Name"
                                 placeholder="Hero Name" />
                             <x-inputs.number wire:model="modalAlternative.1" label="Durability (Benefit)" />
@@ -76,6 +77,7 @@
 
                     <x-modal.card title="Edit Alternative" blur wire:model.defer="editAlternativeModal">
                         <div class="grid grid-cols-1 gap-4">
+
                             <x-input wire:model="modalAlternative.name" label="Alternative Name"
                                 placeholder="Hero Name" />
                             <x-inputs.number wire:model="modalAlternative.1" label="Durability (Benefit)" />
@@ -99,6 +101,7 @@
 
                     <x-modal.card title="Edit Criteria" blur wire:model.defer="editCriteriaModal">
                         <div class="grid grid-cols-1 gap-4">
+
                             <x-input wire:model="modalCriteria.name" readonly label="Criteria Name" />
                             <x-inputs.number min="1" max="10" wire:model="modalCriteria.weight"
                                 label="Weight" />
@@ -126,7 +129,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-
+                    <h1 class="text-3xl font-semibold mb-4">Result</h1>
                     <div class="space">
                         <table class="w-full  text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead
