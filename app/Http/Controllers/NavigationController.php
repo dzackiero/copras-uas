@@ -19,32 +19,12 @@ class NavigationController extends Controller
         ]);
     }
 
-    function userProjects($user) : View {
+    function userProject($user) : View {
         $user = User::where('username', $user)->first();
-        $projects = auth()->user() == $user ? $user->projects : $user->projects->where('isPrivate', false);
 
         return view('user-project', [
-            'projects' =>  $projects,
-            'user' => $user,
+            'user' => $user
         ]);
     }
 
-    function project($id) : View {
-        $project = Project::find($id);
-        if($project == null){
-            return redirect()->route('home');
-        }
-
-        $criterias = $project->criterias;
-        $alternatives = $project->alternatives;
-
-        $altenativeValue = AlternativeValue::all();
-
-        return view('project-detail', [
-            'project' =>  $project,
-            'criterias' =>  $criterias,
-            'alternatives' =>  $alternatives,
-            'values' => $altenativeValue,
-        ]);
-    }
 }

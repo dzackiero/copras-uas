@@ -16,11 +16,5 @@ class AlternativeSeeder extends Seeder
         Alternative::factory(3)->create([
             'project_id' => 1
         ]);
-        Alternative::factory(3)->create([
-            'project_id' => 2
-        ]);
-        Alternative::factory(3)->create([
-            'project_id' => 3
-        ]);
     }
 }

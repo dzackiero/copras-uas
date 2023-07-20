@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ProjectSeeder::class,
             CriteriaSeeder::class,
-            AlternativeSeeder::class,
-            AlternativeValueSeeder::class,
+            // AlternativeSeeder::class,
+            // AlternativeValueSeeder::class,
         ]);
     }
 }

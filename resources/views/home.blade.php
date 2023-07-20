@@ -15,9 +15,8 @@
                             <x-button md icon="plus" primary label="Add Project" />
                         </div>
                     </div> --}}
-                    <livewire:new-project title="Public Project" />
-
-                    <livewire:projects-list searchable />
+                    {{-- <livewire:new-project title="Public Project" /> --}}
+                    {{-- <livewire:projects-list searchable /> --}}
                 </div>
             </div>
         </div>

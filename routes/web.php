@@ -16,8 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [NavigationController::class, 'show'])->middleware(['auth', 'verified'])->name('home');
-Route::get('/{user}/projects', [NavigationController::class, 'userProjects'])->middleware(['auth', 'verified'])->name('user-projects');
-Route::get('/project/{id}', [NavigationController::class, 'project'])->middleware(['auth', 'verified'])->name('project-detail');
+Route::get('/{user}/projects', [NavigationController::class, 'userProject'])->middleware(['auth', 'verified'])->name('user-project');
 
 
 Route::middleware('auth')->group(function () {

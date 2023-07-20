@@ -13,16 +13,25 @@ class CriteriaSeeder extends Seeder
      */
     public function run(): void
     {
-        Criteria::factory(3)->create([
-            'project_id' => 1,
+        Criteria::factory()->create([
+            'name' => 'Durability',
+            'isBenefit' => True,
+            'weight' => 5
         ]);
-
-        Criteria::factory(3)->create([
-            'project_id' => 2,
+        Criteria::factory()->create([
+            'name' => 'Damage',
+            'isBenefit' => True,
+            'weight' => 5
         ]);
-
-        Criteria::factory(3)->create([
-            'project_id' => 3,
+        Criteria::factory()->create([
+            'name' => 'Crowd Control',
+            'isBenefit' => True,
+            'weight' => 5
+        ]);
+        Criteria::factory()->create([
+            'name' => 'Difficulty',
+            'isBenefit' => False,
+            'weight' => 5
         ]);
     }
 }

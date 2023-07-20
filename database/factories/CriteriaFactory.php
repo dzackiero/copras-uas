@@ -17,9 +17,7 @@ class CriteriaFactory extends Factory
     public function definition(): array
     {
         return [
-            "name" => fake()->jobTitle(),
-            "isBenefit" => fake()->boolean(),
-            "weight" => fake()->numberBetween(0,10),
+            'project_id' => 1,
         ];
     }
 }
