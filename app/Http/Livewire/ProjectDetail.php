@@ -103,7 +103,7 @@ class ProjectDetail extends Component
         $this->modalAlternative['name'] = $alternative->name;
 
         foreach($this->criterias as $i => $criteria){
-            $this->modalAlternative[$i+1] = $alternative->alternative_values->where('criteria_id', 1)->first()->value;
+            $this->modalAlternative[$i+1] = $alternative->alternative_values->where('criteria_id', $criteria->id)->first()->value;
         }
 
         $this->editAlternativeModal = true;
