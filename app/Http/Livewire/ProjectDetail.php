@@ -161,18 +161,22 @@ class ProjectDetail extends Component
         $weight = [];
         $this->ranking = [];
 
-
+        // Kuadratin Nilai Alternatif
         foreach ($this->criterias as $criteria) {
+            // Total Semua nilai per criteria untuk alternatif
             $divider = $criteria->alternative_values->pluck('value')
             ->map(function ($item) {
                 return $item*$item;
             })->sum();
 
+            // total tadi diakarin
             $normalize_divider[$criteria->id] = sqrt($divider);
 
+            // menghitung bobot dengan mentotal criteria/total
             $weight[$criteria->id] = $criteria->weight / $this->criterias->sum('weight');
         }
 
+        // Normalisasi matrix
         foreach ($this->alternatives as $alternative) {
             foreach ($this->criterias as $criteria) {
                 $value = AlternativeValue::where('criteria_id', $criteria->id)
@@ -184,8 +188,10 @@ class ProjectDetail extends Component
 
         $optimize = $matrix;
 
+        // Optimasi Matrix
         foreach ($this->alternatives as $alternative) {
             foreach ($this->criterias as $criteria) {
+                // Jika Benefit * 1 jika Cost * -1
                 $isPlus = $criteria->isBenefit ? 1 : -1;
                 $optimize[$alternative->id][$criteria->id] = $matrix[$alternative->id][$criteria->id] * $isPlus * $weight[$criteria->id];
 
