@@ -43,7 +43,7 @@ class NavigationController extends Controller
             Criteria::create([
                 'project_id' => $project->id,
                 'name' => 'Difficulty',
-                'isBenefit' => True,
+                'isBenefit' => False,
                 'weight' => 5
             ]);
         }
